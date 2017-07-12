@@ -35,3 +35,19 @@ module.exports.getActivitiesById = function(id, callback){
 module.exports.addActivity = function(activity, callback){
   Activity.create(activity, callback);
 }
+
+module.exports.updateActivity = function(activity, callback){
+  var query = {_id: id};
+  var update = {
+    name: activity.name,
+    metric: activity.metric,
+    metric_amount: activity.metric_value,
+    date: activity.date
+  }
+  Activity.findOneAndUpdate(query, update, options, callback);
+}
+
+module.exports.removeActivity = function(id, callback){
+  var query = {_id: id};
+  Activity.remove(query, callback);
+}

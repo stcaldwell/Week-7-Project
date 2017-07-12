@@ -46,6 +46,27 @@ app.post('/api/activities', function(req, res){
   });
 });
 
+app.put('/api/activities/:id', function(req, res){
+  var id = req.params._id;
+  var activity = req.body;
+  Activity.updateActivity(id, activity, {}, function(err, activity){
+    if(err){
+      throw err;
+    }
+    res.json(activity);
+  });
+});
+
+app.delete('/api/activities/:_id', function(req, res){
+  var id = req.params._id;
+  Activity.removeActivity(id, function(err, activity){
+    if(err){
+      throw err;
+    }
+    res.json(activity);
+  });
+});
+
 app.listen(27017, function(req, res){
   console.log("Dont get cocky kid")
 });
