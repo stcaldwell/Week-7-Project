@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 
 mongoose.Promise = require('bluebird');
 // Replace "test" with your database name.
@@ -21,6 +24,25 @@ app.get('/api/activities', function(req, res){
       throw err;
     }
     res.json(activities);
+  });
+});
+
+app.get('/api/activities/:_id', function(req, res){
+  Activity.getActivitiesById(req.params._id, function(err, activities){
+    if(err){
+      throw err;
+    }
+    res.json(activities);
+  });
+});
+
+app.post('/api/activities', function(req, res){
+  var activity = req.body;
+  Activity.addActivity(activity, function(err, activity){
+    if(err){
+      throw err;
+    }
+    res.json(activity);
   });
 });
 
