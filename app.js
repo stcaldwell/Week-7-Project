@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
+const passport = require('passport');
+const BasicStrategy = require('passport-http').BasicStrategy;
+const bcrypt = require('bcryptjs');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -13,6 +16,23 @@ mongoose.connect('mongodb://localhost:27017/stattrackdb');
 var db = mongoose.connection;
 
 Activity = require('./models/activities');
+
+passport.use(new BasicStrategy(
+  function(username, password, done) {
+    User.findOne({ name: username }, function(err, user){
+      if (user && bcrypt.compareSync(password, user.password)){
+        return done(null, user);
+      }
+      return done(null, false);
+    });
+  }
+));
+
+app.get('/api/auth',
+  passport.authenticate('basic', {session: false}), function (req, res) {
+      res.send('You seem to check out, ' + req.user.name);
+  }
+);
 
 app.get('/', function(req, res){
   res.send('Please use /api/activities');
