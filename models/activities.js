@@ -27,7 +27,7 @@ module.exports.getActivities = function(callback, limit){
   Activity.find(callback).limit(limit);
 }
 
-module.exports.getActivitiesById = function(id, callback){
+module.exports.getActivityById = function(id, callback){
   Activity.findById(id, callback);
 }
 

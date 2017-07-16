@@ -16,6 +16,7 @@ mongoose.connect('mongodb://localhost:27017/stattrackdb');
 var db = mongoose.connection;
 
 Activity = require('./models/activities');
+User = require('./models/user');
 
 passport.use(new BasicStrategy(
   function(username, password, done) {
@@ -48,11 +49,11 @@ app.get('/api/activities', function(req, res){
 });
 
 app.get('/api/activities/:_id', function(req, res){
-  Activity.getActivitiesById(req.params._id, function(err, activities){
+  Activity.getActivityById(req.params._id, function(err, activity){
     if(err){
       throw err;
     }
-    res.json(activities);
+    res.json(activity);
   });
 });
 
