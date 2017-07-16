@@ -15,8 +15,8 @@ mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://localhost:27017/stattrackdb');
 var db = mongoose.connection;
 
-Activity = require('./models/activities');
-User = require('./models/user');
+const Activity = require('./models/activities');
+const User = require('./models/user');
 
 passport.use(new BasicStrategy(
   function(username, password, done) {
@@ -39,7 +39,7 @@ app.get('/', function(req, res){
   res.send('Please use /api/activities');
 });
 
-app.get('/api/activities', function(req, res){
+app.get('/api/activities', passport.authenticate('basic', {session: false}), function(req, res){
   Activity.getActivities(function(err, activities){
     if(err){
       throw err;
@@ -48,7 +48,7 @@ app.get('/api/activities', function(req, res){
   });
 });
 
-app.get('/api/activities/:_id', function(req, res){
+app.get('/api/activities/:_id', passport.authenticate('basic', {session: false}), function(req, res){
   Activity.getActivityById(req.params._id, function(err, activity){
     if(err){
       throw err;
@@ -57,7 +57,7 @@ app.get('/api/activities/:_id', function(req, res){
   });
 });
 
-app.post('/api/activities', function(req, res){
+app.post('/api/activities', passport.authenticate('basic', {session: false}), function(req, res){
   var activity = req.body;
   Activity.addActivity(activity, function(err, activity){
     if(err){
@@ -67,7 +67,7 @@ app.post('/api/activities', function(req, res){
   });
 });
 
-app.put('/api/activities/:id', function(req, res){
+app.put('/api/activities/:id', passport.authenticate('basic', {session: false}), function(req, res){
   var id = req.params._id;
   var activity = req.body;
   Activity.updateActivity(id, activity, {}, function(err, activity){
@@ -78,7 +78,7 @@ app.put('/api/activities/:id', function(req, res){
   });
 });
 
-app.delete('/api/activities/:_id', function(req, res){
+app.delete('/api/activities/:_id', passport.authenticate('basic', {session: false}), function(req, res){
   var id = req.params._id;
   Activity.removeActivity(id, function(err, activity){
     if(err){
