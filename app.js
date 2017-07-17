@@ -88,6 +88,16 @@ app.delete('/api/activities/:_id', passport.authenticate('basic', {session: fals
   });
 });
 
+
+app.get('/api/activities/stat/:stat', passport.authenticate('basic', {session: false}), function(req, res){
+  Activity.getActivityByStat(req.params.stat, function(err, activity){
+    if(err){
+      throw err;
+    }
+    res.json(activity);
+  });
+});
+
 app.listen(27017, function(req, res){
   console.log("Dont get cocky kid")
 });

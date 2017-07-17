@@ -1,21 +1,20 @@
 var mongoose =  require('mongoose');
-const bcrypt = require('bcryptjs');
+
 
 var statSchema = mongoose.Schema({
-  userId: {
-    type: String,
-    required: true
-  },
-  activityId: {
-    type: String,
-    required: true
-  },
-  date: {
-    type: Date,
-    default: Date.now
+    stat:{
+      type:String,
+      required: true
+    }
+  });
+
+var Stat = module.exports = mongoose.model('Stat', statSchema);
+
+
+module.exports.updateStat = function(id, stat, options, callback){
+  var query = {_id: id};
+  var update = {
+    stat: activity.stat
   }
-
-});
-
-const Stat = mongoose.model('Stat', statSchema);
-modeule.exports = Stat;
+  Stat.findOneAndUpdate(query, update, options, callback);
+}
